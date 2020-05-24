@@ -1,0 +1,26 @@
+{
+  "name": "delilah",
+  "version": "1.0.0",
+  "description": "aplicación de pedidos a un restaurante",
+  "main": "server.js",
+  "dependencies": {
+    "bcrypt": "^4.0.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mysql2": "^2.1.0",
+    "sequelize": "^5.21.9"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "restaurante",
+    "pedidos",
+    "delilah"
+  ],
+  "author": "Juan Sebastian Vargas Arevalo",
+  "license": "ISC"
+}
