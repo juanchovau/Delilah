@@ -165,22 +165,15 @@ Admin cambia estado de pedido
 	
 **Un usuario con rol de administrador debe poder realizar las acciones de creación, edición y eliminación de recursos de productos (CRUD de productos).**
 
-Admin lista de productos (Read)
 
-	POST
-	Ruta: localhost:3030/admin/productos/nuevo
+Admin lista producto  (Read)
+
+	GET
+	Ruta: localhost:3030/admin/productos
 	Headers: 
 		Content-Type: application/json
 		Authorization(Bearer Token): Token obtenido en login
 	
-	Body:
-	{
-	"id_usuario": number,
-	"nombre": string,
-	"costo": number,
-	"foto": string (url),
-	"descripcion": "Deliciosa gaseosa"
-	}
 	
 	Response:
    	[
@@ -196,8 +189,140 @@ Admin lista de productos (Read)
 	{...}
 	]
 
-Admin crea un nuevo producto 
+Admin crea nuevo producto  (Create)
 
+	POST
+	Ruta: localhost:3030/admin/productos/nuevo
+	Headers: 
+		Content-Type: application/json
+		Authorization(Bearer Token): Token obtenido en login
 	
+	Body:
+	{
+	"nombre": string,
+	"costo": number,
+	"foto": string (url),
+	"descripcion": "Deliciosa gaseosa"
+	}
+	
+	Response:
+   	{
+        "id": number,
+        "nombre": string,
+        "costo": number,
+        "foto": string (url),
+        "descripcion": string
+    	}
 
+Admin modifica producto  (Update)
 
+	Patch
+	Ruta: localhost:3030/admin/productos
+	Headers: 
+		Content-Type: application/json
+		Authorization(Bearer Token): Token obtenido en login
+	
+	Body:
+	{
+	"nombre": string,
+	"costo": number,
+	"foto": string (url),
+	"descripcion": "Deliciosa gaseosa"
+	}
+	
+	Response:
+	[
+   	{
+        "id": number,
+        "nombre": string,
+        "costo": number,
+        "foto": string (url),
+        "descripcion": string
+    	}
+	]
+
+Admin borra producto  (Delete)
+
+	Delete
+	Ruta: localhost:3030/admin/productos/borrar
+	Headers: 
+		Content-Type: application/json
+		Authorization(Bearer Token): Token obtenido en login
+	
+	Body:
+	{
+	"id_producto":12
+	}
+	
+	Response:
+	
+	Borrado
+	
+**Un usuario sin roles de administrador no debe poder crear, editar o eliminar un producto, ni editar o eliminar un pedido. Tampoco debe poder acceder a informaciones de otros usuarios.**
+
+Admin borra pedido  
+
+	Delete
+	Ruta: localhost:3030/admin/pedidos/borrar
+	Headers: 
+		Content-Type: application/json
+		Authorization(Bearer Token): Token obtenido en login
+	
+	
+	Response:
+	
+	Borrado
+    
+	
+Solo el admin puede ver todos los usuarios
+
+	GET
+	Ruta: localhost:3030/admin/users
+	Headers: 
+		Content-Type: application/json
+		Authorization(Bearer Token): Token obtenido en login
+	
+	
+	Response:
+	
+	[
+    	{
+        "id": number
+        "usuario": string,
+        "nombre_apellido": string,
+        "correo_electronico": string,
+        "telefono": string,
+        "direccion_envio": string,
+        "es_admin": bolena (0/1)
+    	},
+    	{...},
+    	{...},
+    	{...}
+	]
+
+Admin puede asignar otros admins
+
+	PATCH
+	Ruta: localhost:3030/admin/users
+	Headers: 
+		Content-Type: application/json
+		Authorization(Bearer Token): Token obtenido en login
+	
+	Body
+	{
+	"id_user": 2 (Al usuarios que se le quiere asignar el rol)
+	}
+	
+	Response:
+	
+	[
+    	{
+        "id": number
+        "usuario": string,
+        "nombre_apellido": string,
+        "correo_electronico": string,
+        "telefono": string,
+        "direccion_envio": string,
+        "es_admin": bolena (0/1)
+    	}
+	]
