@@ -59,6 +59,36 @@ function comprobarAdmin(req, res, next) {
  
 }
 
+function comprobarUser(req, res, next) {
+ 
+  const autorizacion  = req.headers['authorization'];
+  const token = autorizacion && autorizacion.split(' ')[1];
+  if(token == null) return res.SendStatus(401);
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, usuario) =>{
+    if(err){
+      
+      return res.sendStatus(403);
+    } 
+
+    sequelize
+    .query("SELECT * FROM `Usuarios` WHERE id = ? ", {
+      type: sequelize.QueryTypes.SELECT,
+      replacements: [usuario.id],
+    })
+    .then((user) => {
+  
+      if (user[0]) {
+        next();
+      } else {
+        res.status(403).send("No permitido");
+      }
+    });
+
+  })
+
+ 
+}
+
 // --- Poder registrar un nuevo usuario --* //
 
 app.post("/users/new", comprobarExistenciaDeUsuario, async (req, res) => {
@@ -125,7 +155,7 @@ app.post("/users/login", async (req, res) => {
 
 //--- ​ Un usuario debe poder listar todos los productos disponibles. --- //
 
-app.get("/users/products", (req, res) => {
+app.get("/users/products", comprobarUser, (req, res) => {
   sequelize
     .query("SELECT * FROM `Productos`", { type: sequelize.QueryTypes.SELECT })
     .then((users) => res.status(200).json(users));
@@ -133,7 +163,7 @@ app.get("/users/products", (req, res) => {
 
 // --- Un usuario debe poder generar un nuevo pedido al Restaurante con un listado de platos que desea. --- //
 
-app.post("/users/pedido", async (req, res) => {
+app.post("/users/pedido", comprobarUser, async (req, res) => {
   const { id_usuario, medio_de_pago, valor, direccion, productos } = req.body;
 
   const horas = new Date().getHours();
